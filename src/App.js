@@ -1,24 +1,23 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import Login from './Login';
+import Register from './Register';
+import Menu from './Menu';
+
+export const StateProvider = React.createContext();
 
 function App() {
+  const [location, setLocation] = useState('LOGIN');
+  const [loggedIn, setLoggedIn] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StateProvider.Provider
+      value={{ location, setLocation, loggedIn, setLoggedIn }}
+    >
+      {location == 'LOGIN' && !loggedIn && <Login />}
+      {location == 'REGISTER' && !loggedIn && <Register />}
+      {location == 'MENU' && loggedIn && <Menu />}
+    </StateProvider.Provider>
   );
 }
 
