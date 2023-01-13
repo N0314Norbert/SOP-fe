@@ -11,15 +11,24 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     const { uname, pass } = document.forms[0];
-    const response = await axios.post('http://localhost:5000/users/login', {
-      name: uname.value,
-      password: pass.value,
-    });
+    const response = await axios
+      .post('http://localhost:5000/users/login', {
+        name: uname.value,
+        password: pass.value,
+      })
+      .catch((err) => {
+        switch (err.response.status) {
+          case 401:
+            alert('Wrong username or password');
+            break;
+          default:
+            alert('Error');
+            break;
+        }
+      });
     if (response.data === 'OK') {
       setLoggedIn(true);
       setLocation('MENU');
-    } else {
-      alert('Wrong username or password');
     }
 
     uname.value = pass.value = '';
